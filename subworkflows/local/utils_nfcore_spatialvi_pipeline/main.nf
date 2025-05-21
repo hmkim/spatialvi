@@ -8,9 +8,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { UTILS_NFSCHEMA_PLUGIN     } from '../../nf-core/utils_nfschema_plugin'
-include { paramsSummaryMap          } from 'plugin/nf-schema'
-include { samplesheetToList         } from 'plugin/nf-schema'
+//include { UTILS_NFVALIDATION_PLUGIN  } from '../../nf-core/utils_nfvalidation_plugin'
+include { paramsSummaryMap          } from 'plugin/nf-validation'
+//include { fromSamplesheet           } from 'plugin/nf-validation'
 include { completionEmail           } from '../../nf-core/utils_nfcore_pipeline'
 include { completionSummary         } from '../../nf-core/utils_nfcore_pipeline'
 include { imNotification            } from '../../nf-core/utils_nfcore_pipeline'
@@ -39,28 +39,28 @@ workflow PIPELINE_INITIALISATION {
     //
     // Print version and exit if required and dump pipeline parameters to JSON file
     //
-    UTILS_NEXTFLOW_PIPELINE (
-        version,
-        true,
-        outdir,
-        workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1
-    )
+//    UTILS_NEXTFLOW_PIPELINE (
+//        version,
+//        true,
+//        outdir,
+//        workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1
+//    )
 
     //
     // Validate parameters and generate parameter summary to stdout
     //
-    UTILS_NFSCHEMA_PLUGIN (
-        workflow,
-        validate_params,
-        null
-    )
+    //UTILS_NFVALIDATION_PLUGIN (
+    //    workflow,
+    //    validate_params,
+    //    null
+    //)
 
     //
     // Check config provided to the pipeline
     //
-    UTILS_NFCORE_PIPELINE (
-        nextflow_cli_args
-    )
+//    UTILS_NFCORE_PIPELINE (
+//        nextflow_cli_args
+//    )
 
     emit:
     versions    = ch_versions
@@ -99,7 +99,7 @@ workflow PIPELINE_COMPLETION {
                 plaintext_email,
                 outdir,
                 monochrome_logs,
-                multiqc_reports.getVal(),
+                multiqc_reports,
             )
         }
 
